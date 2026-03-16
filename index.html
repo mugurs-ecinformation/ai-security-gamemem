@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#050505" />
+<title>AI Security: Final Defense v8 (i18n + Branding)</title>
+<link rel="stylesheet" href="styles/theme.css" />
+<style>
+  /* Video için ek acil stil: Diğer her şeyin üzerinde durması için */
+  #video-overlay {
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: #000; 
+    z-index: 10000; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+  }
+</style>
+</head>
+<body>
+
+<audio id="snd-type" preload="none">https://www.soundjay.com/communication/typewriter-key-1.mp3</audio>
+<audio id="snd-alarm" preload="none">https://www.soundjay.com/buttons/beep-01a.mp3</audio>
+<audio id="snd-success" preload="none">https://www.soundjay.com/buttons/button-09.mp3</audio>
+
+<audio id="bg-music" loop preload="auto">
+    <source src="assets/bg-cyber-music.mp3" type="audio/mpeg">
+</audio>
+
+<div id="video-overlay">
+    <video id="intro-video" style="max-width:80%; border:2px solid var(--accent); box-shadow: 0 0 20px var(--accent);">
+        <source src="assets/privacy-video.mp4" type="video/mp4">
+    </video>
+    <button class="choice-btn" id="btn-skip-video" style="margin-top:20px; width:auto; padding: 10px 20px;">VİDEOYU GEÇ / SKIP VIDEO</button>
+</div>
+
+<div id="game-container" role="application" aria-label="AI Security Final Defense">
+  <div class="header">
+    <div class="title">
+      <img id="brand-logo" src="assets/logo.svg" alt="Logo" style="height:24px;" />
+      <div style="font-weight:bold; color:var(--neon-green)">[AI_SEC_CORE_v8.0]</div>
+      <div id="status" style="color:var(--accent); font-weight:600">STATUS: ACTIEF</div>
+    </div>
+
+    <div class="controls">
+      <label class="toggle" title="Corporate Mode">
+        <input type="checkbox" id="toggle-corp" />
+        <span id="lbl-corp">Corporate Mode (BIO/NIS2/AVG)</span>
+      </label>
+      <label class="toggle" title="Sound">
+        <input type="checkbox" id="toggle-sound" checked />
+        <span id="lbl-sound">Geluid aan</span>
+      </label>
+      <label class="toggle" title="Language">
+        <span id="lbl-lang">Taal</span>
+        <select id="lang-select">
+          <option value="nl">Nederlands</option>
+          <option value="en">English</option>
+        </select>
+      </label>
+      <label class="toggle" title="Brand color">
+        <span id="lbl-brand">Merk‑kleur</span>
+        <input type="color" id="brand-color" value="#00d9ff" />
+      </label>
+      <label class="toggle" title="Logo URL">
+        <span id="lbl-logo">Logo</span>
+        <input type="text" id="logo-url" placeholder="assets/logo.svg" style="width:200px" />
+        <button id="btn-apply-logo" class="mini">OK</button>
+      </label>
+    </div>
+  </div>
+
+  <div class="chat-panel" id="chat-box" aria-live="polite">
+    <div id="lbl-comms" class="muted">COMMUNICATIELOGBOEK</div>
+  </div>
+
+  <div class="main-screen" id="main-display">
+    <div id="terminal-content" class="terminal-text"></div>
+    <div class="action-zone" id="choices-area">
+      <button class="choice-btn" id="btn-start">SYSTEEM STARTEN (Klik om te starten)</button>
+    </div>
+
+    <div id="fact-card" class="fact-box" role="dialog" aria-modal="true">
+      <h3 id="fact-title">💡 Wist je dat? (Casestudy)</h3>
+      <p id="fact-text" style="white-space:pre-wrap"></p>
+      <button class="choice-btn" id="btn-close-fact">Ik begrijp het risico</button>
+    </div>
+
+    <div id="end-modal" class="end-modal" role="dialog" aria-modal="true">
+      <h2 id="end-title">Resultaten van de Operatie</h2>
+      <div class="summary">
+        <div><span class="sub" id="lbl-score1">NALEVINGSSCORE</span>: <span class="value" id="end-hp">—</span></div>
+        <div><span class="sub" id="lbl-score2">BEVEILIGDE DATAPAKKETTEN</span>: <span class="value" id="end-score" style="color:var(--neon-blue)">—</span></div>
+        <div><span class="sub" id="lbl-risk">RISICONIVEAU</span>: <span class="value" id="end-risk">—</span></div>
+        <div class="badges" id="earned-badges"></div>
+      </div>
+      <div id="decisions-list"></div>
+      <div style="display:flex; gap:10px; margin-top:10px;">
+        <button class="choice-btn" id="btn-replay">↻ Opnieuw spelen</button>
+        <button class="choice-btn" id="btn-close-end">Sluiten</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric-box">
+      <span class="sub" id="lbl-m1">NALEVINGSSCORE</span>
+      <div class="value" id="hp-val">100%</div>
+    </div>
+    <div class="metric-box">
+      <span class="sub" id="lbl-m2">BEVEILIGDE DATAPAKKETTEN</span>
+      <div class="value" id="score-val" style="color:var(--neon-blue)">0</div>
+    </div>
+    <div class="metric-box">
+      <span class="sub" id="lbl-m3">RISICONIVEAU</span>
+      <div class="value" id="risk-val">LAAG</div>
+    </div>
+    <div style="grid-column:1 / span 3; margin-top:10px;">
+      <span class="sub" id="lbl-log">SYSTEEMLOG:</span> <span id="log-line">Wachten op operatorauthenticatie...</span>
+      <div class="badges" id="live-badges"></div>
+    </div>
+  </div>
+</div>
+
+<script src="scripts/app.js" defer></script>
+</body>
+</html>
